@@ -6,6 +6,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.before-after-slider img{
+  height: 200px !important;
+  max-height: 200px;
+  border-radius: 20;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

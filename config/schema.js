@@ -5,5 +5,14 @@ export const Users = pgTable("users",{
     name:varchar('name').notNull(),
     email:varchar('email').notNull(),
     imageUrl:varchar('imageUrl').notNull(),
-    credit:integer('credit').notNull().default(3),
+    credits:integer('credits').default(3),
+});
+
+export const AiGeneratedImage=pgTable('aiGeneratedImages',{
+    id:serial('id').primaryKey(),
+    userEmail:varchar('userEmail').notNull(),
+    orgImage:varchar('orgImage').notNull(),
+    aiImage:varchar('aiImage').notNull(),
+    roomType:varchar('roomType').notNull(),
+    designType:varchar('designType').notNull(), 
 });
