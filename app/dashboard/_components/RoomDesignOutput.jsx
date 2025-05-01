@@ -6,35 +6,22 @@ import AiOutputDailog from './AiOutputDailog';
 function RoomDesignOutput({ room }) {
     const [openDialog, setOpenDialog] = useState(false);
 
-    const onClickHandler = () => {
-        setOpenDialog(true); 
-    };
-
-    const closeDialogHandler = () => {
-        setOpenDialog(false); 
-    };
-
     return (
-        <div className='w-full bg-white rounded-lg shadow-lg p-4 flex flex-col justify-center items-center cursor-pointer' onClick={onClickHandler}>
+        <div className='w-full bg-white rounded-lg shadow-lg p-4 flex flex-col justify-center items-center cursor-pointer' onClick={() => setOpenDialog(true)}>
             <ReactBeforeSliderComponent
-                firstImage={{
-                    imageUrl: room?.aiImage,
-                }}
-                secondImage={{
-                    imageUrl: room?.orgImage,
-                }}
+                firstImage={{ imageUrl: room?.aiImage }}
+                secondImage={{ imageUrl: room?.orgImage }}
             />
             <div className='flex flex-col justify-evenly items-center mt-4'>
                 <h2 className='text-bold'>&#127968; Roomtype: {room.roomType}</h2>
                 <h2>🎨 Design type: {room.designType}</h2>
             </div>
 
-            {/* Pass openDialog state to AiOutputDailog and control visibility */}
-            <AiOutputDailog 
-                aiImage={room.aiImage} 
-                orgImage={room.orgImage} 
-                closeDialog={closeDialogHandler} 
-                openDialog={openDialog} 
+            <AiOutputDailog
+                aiImage={room.aiImage}
+                orgImage={room.orgImage}
+                openDialog={openDialog}
+                closeDailog={(open) => setOpenDialog(open)} // this will respond to both `true` and `false`
             />
         </div>
     );

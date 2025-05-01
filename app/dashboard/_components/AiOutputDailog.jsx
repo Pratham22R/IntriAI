@@ -14,35 +14,25 @@ import { Button } from '@/components/ui/button';
 import ReactBeforeSliderComponent from 'react-before-after-slider-component';
 import 'react-before-after-slider-component/dist/build.css';
 
-function AiOutputDialog({ openDialog, closeDialog, orgImage, aiImage }) {
+function AiOutputDailog({ openDialog, closeDailog, orgImage, aiImage }) {
     return (
-        <AlertDialog open={openDialog}>
-            <AlertDialogContent className="ai-output-dialog">
-                <AlertDialogHeader className="dialog-header">
-                    <AlertDialogTitle className="dialog-title">Result:</AlertDialogTitle>
-                </AlertDialogHeader>
-
-                {/* Before-After Image Slider */}
-                <div className="image-slider-container">
+        <AlertDialog open={openDialog} onOpenChange={closeDailog}>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Result:</AlertDialogTitle>
                     <ReactBeforeSliderComponent
-                        firstImage={{ imageUrl: aiImage }}
-                        secondImage={{ imageUrl: orgImage }}
-                        sliderLineColor="#fff" // Customize the slider line color
+                        firstImage={{
+                            imageUrl: aiImage,
+                        }}
+                        secondImage={{
+                            imageUrl: orgImage,
+                        }}
                     />
-                </div>
-
-                <AlertDialogFooter className="dialog-footer">
-                    {/* Close button */}
-                    <Button
-                        className="close-button"
-                        onClick={closeDialog}
-                    >
-                        Close
-                    </Button>
-                </AlertDialogFooter>
+                    <Button onClick={closeDailog}>Close</Button> {/* Just call closeDailog without arguments */}
+                </AlertDialogHeader>
             </AlertDialogContent>
         </AlertDialog>
     );
 }
 
-export default AiOutputDialog;
+export default AiOutputDailog;  

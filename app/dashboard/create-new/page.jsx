@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ImageSelection from './_components/ImageSelection';
 import RoomType from './_components/RoomType';
 import DesignType from './_components/DesignType';
@@ -11,6 +11,10 @@ import { storage } from '@/config/firebaseConfig';
 import { useUser } from '@clerk/nextjs';
 import CustomLoading from './_components/CustomLoading';
 import AiOutputDailog from '../_components/AiOutputDailog';
+import { db } from '@/config/db';
+import { Users } from '@/config/schema';
+import { UserDetailContext } from '@/app/_context/UserDetailContext';
+import { eq } from 'drizzle-orm';
 
 function CreateNew() {
   const { user } = useUser();
@@ -20,14 +24,35 @@ function CreateNew() {
   const [openOutputDialog, setOpenOutputDialog] = useState(false);
   const [orgImage, setOrgImage] = useState();
   const [aiImageUrl, setAiImageUrl] = useState();
-  // const [outputResult, setOutputResult] = useState();
+  const { userDetail, setUserDetail } = useContext(UserDetailContext);
+
+  useEffect(() => {
+    const fetchUserDetail = async () => {
+      try {
+        if (user?.primaryEmailAddress?.emailAddress && !userDetail) {
+          const res = await axios.get(`/api/get-user?email=${user.primaryEmailAddress.emailAddress}`);
+          if (res.data) {
+            setUserDetail(res.data);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user detail:', error);
+      }
+    };
+
+    fetchUserDetail();
+  }, [user]);
 
   const onHandledInputChange = (value, fieldName) => {
     setFormData((prev) => ({ ...prev, [fieldName]: value }));
-    console.log(formData);
   };
 
   const GenerateAiImage = async () => {
+    if (!userDetail || typeof userDetail.credits !== 'number') {
+      console.error("User detail is not ready or malformed.");
+      return;
+    }
+
     setLoading(true);
     const rawImageUrl = await saveRawImageToFirebase();
 
@@ -41,12 +66,31 @@ function CreateNew() {
       });
 
       console.log(result.data);
+      await updateUserCredit();
       setAiOutputImage(result.data.result);
       setOpenOutputDialog(true);
     } catch (error) {
       console.error('Error generating AI image:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const updateUserCredit = async () => {
+    if (!userDetail || typeof userDetail.credits !== 'number') {
+      console.error("User detail or credits missing");
+      return;
+    }
+  
+    console.log("User detail at updateUserCredit:", userDetail);
+  
+    const result = await db.update(Users).set(
+      { credits: userDetail.credits - 1 }
+    ).where(eq(Users.id, userDetail.id)) // ✅ CORRECT usage
+    .returning({ id: Users.id });
+  
+    if (result) {
+      setUserDetail((prev) => ({ ...prev, credits: prev.credits - 1 }));
     }
   };
 
@@ -63,6 +107,10 @@ function CreateNew() {
     setOrgImage(downloadUrl);
     return downloadUrl;
   };
+
+  if (!userDetail) {
+    return <p className="text-center text-gray-500 mt-20">Loading user data...</p>;
+  }
 
   return (
     <div className="px-4 md:px-10 py-10">
