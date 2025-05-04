@@ -46,12 +46,12 @@ export default function BuyCreditsPage() {
     const res = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(selectedOption),
+      body: JSON.stringify({ plan: selectedOption.title.toUpperCase() }),
     });
-
+  
     const data = await res.json();
     setIsLoading(false);
-
+  
     if (data?.url) {
       window.location.href = data.url;
     } else {

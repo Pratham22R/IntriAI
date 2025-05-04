@@ -117,7 +117,7 @@ export default function Home() {
             <span className="z-10 relative">Get Started</span>
             <span className="absolute inset-0 rounded-full border-2 border-purple-500 blur-sm animate-pulse opacity-50"></span>
           </button>
-          <button className="border border-white px-8 py-4 rounded-full text-lg font-semibold text-white hover:bg-white hover:text-black transition-all">
+          <button className="border border-white px-8 py-4 rounded-full text-lg font-semibold text-white hover:bg-white hover:text-black transition-all" onClick={() => router.push("#about")}>
             Learn More
           </button>
         </motion.div>
@@ -172,21 +172,99 @@ export default function Home() {
         </div>
       </section>
 
+      <hr
+        className="my-8 mx-auto w-1/2 border-t-2 border-transparent"
+        style={{
+          background: 'linear-gradient(to right, rgb(126, 58, 242), rgb(29, 78, 216))',
+          height: '2px',
+          boxShadow: '0 0 10px rgba(126, 58, 242, 0.7), 0 0 20px rgba(29, 78, 216, 0.7)',
+        }}
+      />
 
-      {/* About Section */}
-      <section id="about" className="py-20 px-6 text-center bg-gradient-to-r bg-black">
+      {/* About Us Section */}
+      <section id="about" className="py-20 bg-black text-white text-center">
         <h2 className="text-4xl font-extrabold text-white mb-8">About Us</h2>
-        <p className="text-lg text-gray-200 max-w-3xl mx-auto">
-          At AI-Room, we're revolutionizing interior design with artificial intelligence. Our mission is to make home and office redesigns more accessible, faster, and more personalized. Whether you're a homeowner or a designer, our platform empowers you to reimagine spaces effortlessly, blending technology with creativity.
+        <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
+          At AI-Room Design, we are passionate about transforming your space into something extraordinary using cutting-edge AI technology.
+          Our goal is to empower users to visualize and redesign their interiors effortlessly, making the world of design more accessible to everyone.
         </p>
-        <div className="mt-10">
-          <button
-            onClick={handleGetStarted} className=" py-3 px-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-semibold hover:opacity-90 transition-all">
-            <a href="/learn-more" className="inline-block py-3 px-8 rounded-full text-lg font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:opacity-90 transition-all cursor-pointer">
-              Discover Our Vision
-            </a> </button>
+
+        {/* About Us Content */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 max-w-4xl mx-auto">
+          <div className="space-y-6">
+            <h3 className="text-2xl font-semibold text-white">
+              Who We Are
+            </h3>
+            <p className="text-gray-300">
+              We are a team of interior design enthusiasts, AI experts, and tech innovators dedicated to creating a seamless experience
+              for users who want to visualize their dream spaces. Our platform combines the power of artificial intelligence with
+              beautiful, user-friendly design tools to give users the ability to regenerate their rooms with just a few clicks.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <h3 className="text-2xl font-semibold text-white">
+              Our Mission
+            </h3>
+            <p className="text-gray-300">
+              Our mission is simple: to make interior design more accessible to everyone. Whether you're a professional designer,
+              homeowner, or just looking to explore creative possibilities, we want to provide the best tools to turn your vision
+              into reality. We believe everyone deserves a beautifully designed space that fits their personality and needs.
+            </p>
+          </div>
         </div>
+
+        {/* Team Member Section */}
+        <div className="mt-16">
+          <h3 className="text-3xl font-extrabold text-white mb-10">
+            Meet Our Team
+          </h3>
+
+          <div className="flex justify-center gap-10">
+            {/* Team Member 1 */}
+            <div className="text-center">
+              <div className="overflow-hidden rounded-full mb-4 w-48 h-48 mx-auto flex items-center justify-center transition-transform transform hover:scale-110 hover:shadow-xl duration-300 ease-in-out">
+                <Image
+                  src="/pratham.jpeg"
+                  alt="Pratham Raghuvanshi"
+                  width={192} // Matching the size for the circular container
+                  height={192} // Matching the size for the circular container
+                  className="object-cover"
+                />
+              </div>
+              <h4 className="font-semibold text-lg text-white">Pratham Raghuvanshi</h4>
+              <p className="text-gray-400">Designer N Developer</p>
+            </div>
+
+            {/* Team Member 2 */}
+            <div className="text-center">
+              <div className="overflow-hidden rounded-full mb-4 w-48 h-48 mx-auto flex items-center justify-center transition-transform transform hover:scale-110 hover:shadow-xl duration-300 ease-in-out">
+                <Image
+                  src="/shatakshi.jpeg"
+                  alt="Shatakshi Rajput"
+                  width={192} // Matching the size for the circular container
+                  height={192} // Matching the size for the circular container
+                  className="object-cover"
+                />
+              </div>
+              <h4 className="font-semibold text-lg text-white">Shatakshi Rajput</h4>
+              <p className="text-gray-400">Developer</p>
+            </div>
+          </div>
+        </div>
+
       </section>
+
+
+      <hr
+        className="my-8 mx-auto w-1/2 border-t-2 border-transparent"
+        style={{
+          background: 'linear-gradient(to right, rgb(126, 58, 242), rgb(29, 78, 216))',
+          height: '2px',
+          boxShadow: '0 0 10px rgba(126, 58, 242, 0.7), 0 0 20px rgba(29, 78, 216, 0.7)',
+        }}
+      />
+
 
       {/* Contact Section */}
       <section id="contact" className="bg-black text-white py-20 px-6">

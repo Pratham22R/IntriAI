@@ -21,8 +21,10 @@ function Header() {
     return (
         <div className='sticky top-0 z-50 bg-white shadow-md p-4 flex justify-between items-center border-b border-gray-200'>
             <div className='flex items-center gap-6'>
-                <Image src={'/logo.svg'} alt={"Logo"} width={40} height={40} />
-                <h2 className='font-extrabold text-2xl text-gray-800 tracking-tight'>AI-Room Design</h2>
+                <Link href={'/'} className='flex items-center gap-2'>
+                    <Image src={'/logo.svg'} alt={"Logo"} width={40} height={40} />
+                    <h2 className='font-extrabold text-2xl text-gray-800 tracking-tight'>AI-Room Design</h2>
+                </Link>
             </div>
 
             <div className='hidden md:flex items-center gap-8'>

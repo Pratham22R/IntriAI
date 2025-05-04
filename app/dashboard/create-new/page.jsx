@@ -81,14 +81,14 @@ function CreateNew() {
       console.error("User detail or credits missing");
       return;
     }
-  
+
     console.log("User detail at updateUserCredit:", userDetail);
-  
+
     const result = await db.update(Users).set(
       { credits: userDetail.credits - 1 }
     ).where(eq(Users.id, userDetail.id)) // ✅ CORRECT usage
-    .returning({ id: Users.id });
-  
+      .returning({ id: Users.id });
+
     if (result) {
       setUserDetail((prev) => ({ ...prev, credits: prev.credits - 1 }));
     }
@@ -127,7 +127,14 @@ function CreateNew() {
           <RoomType selectedRoomType={(value) => onHandledInputChange(value, 'roomtype')} />
           <DesignType selectedDesignType={(value) => onHandledInputChange(value, 'designType')} />
           <AdditionalReq selectedAdditionalReq={(value) => onHandledInputChange(value, 'additionalReq')} />
-          <Button className="w-full mt-5" onClick={GenerateAiImage}>Generate</Button>
+          <Button
+            className={`w-full mt-5 ${userDetail.credits === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={GenerateAiImage}
+            disabled={userDetail.credits === 0}
+          >
+            {userDetail.credits === 0 ? 'No Credits Left' : 'Generate'}
+          </Button>
+
           <p className="text-gray-400 text-sm mt-2">Note 1 credit will be used to redesign your room</p>
         </div>
       </div>
