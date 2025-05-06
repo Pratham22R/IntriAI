@@ -1,57 +1,33 @@
+// app/api/create-checkout-session/route.js
 import Stripe from 'stripe';
 import { NextResponse } from 'next/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-export async function POST(request) {
+export async function POST() {
   try {
-    const body = await request.json();
-    const { plan } = body;
-    const title = plan.toUpperCase(); // Normalize input
-
-
-    const priceIdMap = {
-      STARTER: process.env.STRIPE_STARTER_PRICE_ID,
-      PROFESSIONAL: process.env.STRIPE_PROFESSIONAL_PRICE_ID,
-      ENTERPRISE: process.env.STRIPE_ENTERPRISE_PRICE_ID,
-    };
-
-    const creditsMap = {
-      STARTER: 20,
-      PROFESSIONAL: 100,
-      ENTERPRISE: 250,
-    };
-
-    const priceId = priceIdMap[title];
-    const credits = creditsMap[title];
-
-    if (!priceId || !credits) {
-      return NextResponse.json({ error: 'Invalid plan title' }, { status: 400 });
-    }
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
         {
-          price: priceId,
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: '20 AI Credits',
+            },
+            unit_amount: 1000, // $10
+          },
           quantity: 1,
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
-      metadata: {
-        credits: credits.toString(),
-        title,
-      },
+      success_url: 'http://localhost:3000/success',
+      cancel_url: 'http://localhost:3000/dashboard/buy-credits',
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (err) {
-    console.error('Stripe error:', err);
-    return NextResponse.json(
-      { error: err.message || 'Internal server error' },
-      { status: 500 }
-    );
+  } catch (error) {
+    console.error('Stripe Session Error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

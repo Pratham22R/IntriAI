@@ -1,136 +1,149 @@
 'use client';
 import React, { useState } from 'react';
-import { CheckCircle, Star } from 'lucide-react';
+import { CheckCircle, Star, Sparkles } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
+import { useUser } from '@clerk/nextjs';
+import { motion } from 'framer-motion';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export default function BuyCreditsPage() {
-  const [selectedOption, setSelectedOption] = useState(null);
+  const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
 
-  const pricingPlans = [
-    {
-      title: "Starter",
-      price: 5,
-      credits: 20,
-      description: "Perfect for trying things out.",
-      features: ["Basic support", "All AI tools", "Instant delivery"],
-      popular: false,
-    },
-    {
-      title: "Professional",
-      price: 15,
-      credits: 100,
-      description: "Ideal for regular users.",
-      features: ["Priority support", "Advanced features", "Instant delivery"],
-      popular: true,
-    },
-    {
-      title: "Enterprise",
-      price: 30,
-      credits: 250,
-      description: "For heavy AI room design usage.",
-      features: ["Premium support", "Team usage", "All features unlocked"],
-      popular: false,
-    },
-  ];
-
-  const handlePurchase = (plan) => {
-    setSelectedOption(plan);
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  const plan = {
+    title: "Pro Plan",
+    price: 10,
+    credits: 20,
+    description: "Buy 20 credits to generate more AI designs.",
+    features: ["Instant Delivery", "All Features", "No Expiry"],
   };
 
-  const handleStripePayment = async () => {
+  const freePlan = {
+    title: "Free Plan",
+    price: 0,
+    credits: 3,
+    description: "All users are given 3 credits by default.",
+    features: ["Basic AI Designs", "No Expiry", "Limited Access"],
+  };
+
+  const handleBuy = async () => {
     setIsLoading(true);
-    const res = await fetch('/api/create-checkout-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan: selectedOption.title.toUpperCase() }),
-    });
-  
-    const data = await res.json();
-    setIsLoading(false);
-  
-    if (data?.url) {
-      window.location.href = data.url;
-    } else {
-      alert('Stripe checkout failed');
+    try {
+      const email = user?.primaryEmailAddress?.emailAddress;
+      if (!email) throw new Error('No email found');
+
+      const creditRes = await fetch('/api/update-credits', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!creditRes.ok) throw new Error('Failed to update credits');
+
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+      });
+
+      const data = await res.json();
+      setIsLoading(false);
+
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        alert('Failed to redirect to Stripe');
+      }
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+      alert('Something went wrong. Please try again.');
     }
   };
 
   return (
-    <div className="min-h-screen py-5 px-6 md:px-20 bg-gradient-to-b from-white via-gray-50 to-white text-gray-900">
-      <div className="text-center mb-16">
-        <h1 className="text-5xl font-extrabold mb-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-transparent bg-clip-text">
-          Buy AI Credits
-        </h1>
-        <p className="text-gray-500 mt-2 max-w-2xl mx-auto text-lg">
-          Unlock more AI-generated room designs. Choose a plan that suits your needs and start creating today.
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-center mb-4"
+      >
+        <h1 className="text-4xl font-bold text-purple-700">Choose Your Plan</h1>
+        <p className="text-gray-600 mt-2 text-lg">
+          Get more credits to unlock premium AI room designs instantly.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="grid gap-8 md:grid-cols-3">
-        {pricingPlans.map((plan, index) => (
-          <div
-            key={index}
-            className={`relative bg-white rounded-2xl border p-8 flex flex-col justify-between shadow-md hover:shadow-2xl transition-all duration-300 ${
-              plan.popular ? 'border-transparent ring-2 ring-purple-400/50' : 'border-gray-200'
-            }`}
-          >
-            {plan.popular && (
-              <div className="absolute top-4 right-4 bg-purple-500 text-white text-xs font-semibold px-3 py-1 rounded-full flex items-center shadow-sm">
-                <Star size={14} className="mr-1" />
-                Most Popular
-              </div>
-            )}
-
-            <div>
-              <h2 className="text-2xl font-bold mb-2">{plan.title}</h2>
-              <p className="text-gray-500 text-sm mb-4">{plan.description}</p>
-              <p className="text-5xl font-extrabold text-gray-900">${plan.price}</p>
-              <p className="text-purple-600 font-semibold mb-6">{plan.credits} credits</p>
-
-              <hr className="my-4 border-gray-200" />
-
-              <ul className="space-y-3 text-sm text-gray-700">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-center">
-                    <CheckCircle size={18} className="text-purple-500 mr-2" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <button
-              onClick={() => handlePurchase(plan)}
-              className="mt-8 w-full py-3 text-sm font-medium rounded-lg bg-purple-600 text-white hover:bg-purple-700 hover:scale-105 hover:shadow-lg transition-all duration-200"
-            >
-              Select Plan
-            </button>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="grid gap-8 w-full max-w-5xl grid-cols-1 md:grid-cols-2 mt-10"
+      >
+        {/* Free Plan */}
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          className="bg-white border border-gray-200 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 text-center relative"
+        >
+          <div className="flex items-center justify-center mb-4">
+            <Sparkles className="text-purple-500 mr-2" />
+            <h2 className="text-2xl font-bold text-gray-900">{freePlan.title}</h2>
           </div>
-        ))}
-      </div>
-
-      {selectedOption && (
-        <div className="mt-24 max-w-xl mx-auto bg-white border border-gray-200 rounded-2xl p-8 shadow-lg text-center">
-          <h2 className="text-3xl font-bold mb-4 text-gray-900">Confirm Your Plan</h2>
-          <p className="text-gray-500 mb-6 text-lg">
-            You're about to purchase{' '}
-            <span className="font-bold text-purple-600">{selectedOption.credits} credits</span> for{' '}
-            <span className="font-bold text-purple-600">${selectedOption.price}</span>.
-          </p>
-
+          <p className="text-gray-600 mb-4">{freePlan.description}</p>
+          <p className="text-5xl font-extrabold text-purple-700">${freePlan.price}</p>
+          <p className="text-purple-700 font-medium mb-4 ">{freePlan.credits} Credits</p>
+          <ul className="space-y-2 text-sm text-gray-700 mt-4 mb-6">
+            {freePlan.features.map((feature, i) => (
+              <li key={i} className="flex items-center justify-center">
+                <CheckCircle size={16} className="text-purple-600 mr-2" />
+                {feature}
+              </li>
+            ))}
+          </ul>
           <button
-            onClick={handleStripePayment}
-            disabled={isLoading}
-            className="inline-flex items-center justify-center px-8 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 hover:scale-105 hover:shadow-lg transition disabled:opacity-50"
+            disabled
+            className="w-full py-3 text-gray-500 bg-gray-200 rounded-lg font-semibold cursor-not-allowed"
           >
-            {isLoading ? 'Redirecting…' : 'Proceed to Payment'}
+            Already Active
           </button>
-        </div>
-      )}
+        </motion.div>
+
+
+        {/* Pro Plan */}
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="bg-white border border-purple-300 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 text-center relative"
+        >
+          <div className="absolute top-4 right-4">
+            <span className="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full flex items-center">
+              <Star size={14} className="mr-1" />
+              Most Popular
+            </span>
+          </div>
+          <div className="flex items-center justify-center mb-4">
+            <Star className="text-purple-600 mr-2" />
+            <h2 className="text-2xl font-bold text-purple-600">{plan.title}</h2>
+          </div>
+          <p className="text-gray-500 mb-4">{plan.description}</p>
+          <p className="text-5xl font-extrabold text-purple-700">${plan.price}</p>
+          <p className="text-purple-700 font-medium mb-4">{plan.credits} Credits</p>
+          <ul className="space-y-2 text-sm text-gray-700 mb-6">
+            {plan.features.map((feature, i) => (
+              <li key={i} className="flex items-center justify-center">
+                <CheckCircle size={16} className="text-purple-600 mr-2" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+          <button
+            onClick={handleBuy}
+            disabled={isLoading}
+            className="w-full py-3 text-white bg-purple-600 rounded-lg font-semibold hover:bg-purple-700 transition disabled:opacity-50"
+          >
+            {isLoading ? 'Processing…' : 'Buy Credits for $10'}
+          </button>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }
