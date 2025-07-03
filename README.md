@@ -2,8 +2,7 @@
 
 Welcome to the **AI-Powered Interior Design Platform**, an innovative web app built using **Next.js**, designed to provide smart interior design suggestions powered by AI.
 
-## Deployed Link 
- - https://intriai.vercel.app/
+## Deployed Link - https://intriai.vercel.app/
 
 ## 🌟 Features
 - 🏡 AI-generated interior design recommendations
