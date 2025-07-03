@@ -1,4 +1,4 @@
-# 🚀 AI-Powered Interior Design Platform
+# 🚀 AI-Powered Interior Design Platform    https://intriai.vercel.app/
 
 Welcome to the **AI-Powered Interior Design Platform**, an innovative web app built using **Next.js**, designed to provide smart interior design suggestions powered by AI.
 
@@ -12,8 +12,8 @@ Welcome to the **AI-Powered Interior Design Platform**, an innovative web app bu
 ## 📦 Tech Stack
 - **Frontend**: Next.js, React.js, Tailwind CSS
 - **Backend**: Node.js, Express.js, MongoDB
-- **AI Processing**: TensorFlow.js, OpenCV.js
-- **Deployment**: Vercel, Cloudinary
+- **AI Processing**: Replicate
+- **Deployment**: Vercel, Firebase
 
 ---
 ## 🚀 Getting Started
@@ -31,7 +31,7 @@ npm install   # or yarn install
 
 ### **3️⃣ Run the Development Server**
 ```sh
-npm run dev   # or yarn dev
+npm start  # or yarn dev
 ```
 
 🔗 Open **[http://localhost:3000](http://localhost:3000)** in your browser to see the app in action.
