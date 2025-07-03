@@ -21,8 +21,8 @@ export async function POST() {
         },
       ],
       mode: 'payment',
-      success_url: 'http://localhost:3000/success',
-      cancel_url: 'http://localhost:3000/dashboard/buy-credits',
+      success_url: 'https://intriai.vercel.app/success',
+      cancel_url: 'https://intriai.vercel.app/dashboard/buy-credits',
     });
 
     return NextResponse.json({ url: session.url });
