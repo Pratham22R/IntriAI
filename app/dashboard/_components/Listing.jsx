@@ -29,7 +29,7 @@ function Listing() {
             <div className="flex   justify-between items-center ">
                 <h2 className='font-bold text-3xl'>Hello, {user?.fullName}</h2>
                 <Link href={'/dashboard/create-new'}>
-                    <Button className='mt-4 bg-primary text-white' variant='outline'>+ Redisgn Room</Button>
+                    <Button className='mt-4 bg-primary text-white' variant='outline'>+ Redesign Room</Button>
                 </Link>
             </div>
             {userRoomList?.length == 0 ? <EmptyState /> :

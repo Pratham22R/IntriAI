@@ -41,7 +41,7 @@ export default function Home() {
           <div className="bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-lg px-2 py-1 font-bold text-lg">
             AI
           </div>
-          <span className="text-xl font-semibold hover:text-gray-300 transition-colors">AI-Room Design</span>
+          <span className="text-xl font-semibold hover:text-gray-300 transition-colors">IntriAI</span>
         </div>
 
         {/* Navigation */}
@@ -72,7 +72,7 @@ export default function Home() {
             Sign In
           </button>
           <button onClick={handleGetStarted} className="bg-gradient-to-r from-purple-600 to-blue-500 text-white px-4 py-2 rounded-lg flex items-center space-x-1 hover:opacity-90 transition-all transform hover:scale-105 hover:shadow-lg">
-            <span>Get Started</span>
+            <span>Sign Up</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
