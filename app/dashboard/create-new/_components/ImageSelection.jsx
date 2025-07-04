@@ -5,7 +5,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 
-function ImageSelection({selectedImage}) {
+function ImageSelection({ selectedImage }) {
   const [file, setFile] = useState(null);
 
   const onFileSelected = (event) => {
@@ -18,23 +18,23 @@ function ImageSelection({selectedImage}) {
   };
 
   return (
-    <div >
-      <label className="block mb-2 ml-8 text-sm font-medium text-gray-900 dark:text-gray-300">
+    <div className="w-full">
+      <label className="block mb-2 ml-4 text-sm font-medium text-gray-900 dark:text-gray-300">
         Select Image of your room
       </label>
 
       <div className="mt-3">
         <label htmlFor="upload-image">
           <div
-            className={`relative w-[350px] h-[350px] mx-auto border rounded-xl border-dotted bg-gray-50 dark:bg-gray-700 dark:border-gray-600 flex items-center justify-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 hover:shadow-md border-primary ${
+            className={`relative w-full max-w-[350px] h-[300px] sm:h-[350px] mx-auto border rounded-xl border-dotted bg-gray-50 dark:bg-gray-700 dark:border-gray-600 flex items-center justify-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 hover:shadow-md border-primary ${
               file ? 'bg-white' : ''
             }`}
           >
             {!file ? (
               <Image
                 src={'/uploadImage.svg'}
-                width={100}
-                height={100}
+                width={80}
+                height={80}
                 alt="upload placeholder"
               />
             ) : (

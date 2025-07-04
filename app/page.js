@@ -1,6 +1,8 @@
 'use client';
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import {
@@ -25,57 +27,52 @@ export default function Home() {
       router.push("/sign-in?redirect_url=/dashboard");
     }
   };
+   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <main className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Floating orbs background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute w-[1500px] h-[1500px] bg-purple-800 opacity-20 rounded-full top-[-30%] left-[-40%] blur-[300px] animate-pulse"></div>
-        <div className="absolute w-[1200px] h-[1200px] bg-blue-500 opacity-20 rounded-full bottom-[-30%] right-[-35%] blur-[280px] animate-pulse"></div>
+      {/* Floating Background Orbs */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute w-[1000px] h-[1000px] bg-purple-800 opacity-20 rounded-full top-[-20%] left-[-30%] blur-[250px] animate-pulse"></div>
+        <div className="absolute w-[900px] h-[900px] bg-blue-500 opacity-20 rounded-full bottom-[-20%] right-[-25%] blur-[220px] animate-pulse"></div>
       </div>
 
       {/* Navbar */}
-      <header className="flex justify-between items-center px-10 py-4 bg-black text-white shadow-lg">
-        {/* Logo and Name */}
+      <header className="flex justify-between items-center px-6 md:px-10 py-4 bg-black text-white shadow-lg z-10 relative">
+        {/* Logo */}
         <div className="flex items-center space-x-3">
           <div className="bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-lg px-2 py-1 font-bold text-lg">
             AI
           </div>
-          <span className="text-xl font-semibold hover:text-gray-300 transition-colors">IntriAI</span>
+          <span className="text-xl font-semibold hover:text-gray-300 transition-colors">
+            IntriAI
+          </span>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex space-x-8 text-sm font-medium">
-          <a
-            href="#features"
-            className="relative text-gray-300 hover:text-purple-400 transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-purple-400 after:transition-all hover:after:w-full"
-          >
-            Features
-          </a>
-          <a
-            href="#about"
-            className="relative text-gray-300 hover:text-purple-400 transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-purple-400 after:transition-all hover:after:w-full"
-          >
-            About
-          </a>
-          <a
-            href="#contact"
-            className="relative text-gray-300 hover:text-purple-400 transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-purple-400 after:transition-all hover:after:w-full"
-          >
-            Contact
-          </a>
+        {/* Desktop Nav Links */}
+        <nav className="hidden md:flex space-x-6 text-sm font-medium">
+          <a href="#features" className="text-gray-300 hover:text-purple-400 transition-colors">Features</a>
+          <a href="#about" className="text-gray-300 hover:text-purple-400 transition-colors">About</a>
+          <a href="#contact" className="text-gray-300 hover:text-purple-400 transition-colors">Contact</a>
         </nav>
 
-        {/* Buttons */}
-        <div className="flex space-x-4">
-          <button onClick={handleGetStarted} className="border border-purple-500 text-purple-400 px-4 py-2 rounded-lg hover:bg-purple-600 hover:text-white transition-all transform hover:scale-105 hover:shadow-lg">
+        {/* Desktop Buttons */}
+        <div className="hidden md:flex space-x-2">
+          <button onClick={handleGetStarted} className="border border-purple-500 text-purple-400 px-4 py-2 rounded-lg hover:bg-purple-600 hover:text-white transition-all">
             Sign In
           </button>
-          <button onClick={handleGetStarted} className="bg-gradient-to-r from-purple-600 to-blue-500 text-white px-4 py-2 rounded-lg flex items-center space-x-1 hover:opacity-90 transition-all transform hover:scale-105 hover:shadow-lg">
+          <button onClick={handleGetStarted} className="bg-gradient-to-r from-purple-600 to-blue-500 text-white px-4 py-2 rounded-lg hover:opacity-90 flex items-center space-x-1">
             <span>Sign Up</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
+          </button>
+        </div>
+
+        {/* Hamburger Button - Mobile Only */}
+        <div className="md:hidden">
+          <button onClick={() => setDrawerOpen(true)} aria-label="Open Menu">
+            <Menu className="w-6 h-6 text-white" />
           </button>
         </div>
       </header>
@@ -87,7 +84,7 @@ export default function Home() {
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="text-5xl md:text-7xl font-extrabold mb-4 leading-tight"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight"
         >
           <span className="bg-gradient-to-r from-fuchsia-500 via-blue-500 to-white bg-clip-text text-transparent">
             AI-Powered Interior
@@ -99,7 +96,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.3 }}
-          className="text-lg md:text-xl text-gray-400 max-w-2xl mb-8"
+          className="text-md sm:text-lg md:text-xl text-gray-400 max-w-2xl mb-8"
         >
           Reimagine your space using advanced artificial intelligence. Upload your room and get stunning redesigns instantly.
         </motion.p>
@@ -108,16 +105,19 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5 }}
-          className="flex gap-6 mb-12"
+          className="flex flex-wrap gap-4 justify-center mb-12"
         >
           <button
             onClick={handleGetStarted}
-            className="relative px-8 py-4 rounded-full text-lg font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90 transition-shadow shadow-xl"
+            className="relative px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:opacity-90 transition-shadow shadow-xl"
           >
             <span className="z-10 relative">Get Started</span>
             <span className="absolute inset-0 rounded-full border-2 border-purple-500 blur-sm animate-pulse opacity-50"></span>
           </button>
-          <button className="border border-white px-8 py-4 rounded-full text-lg font-semibold text-white hover:bg-white hover:text-black transition-all" onClick={() => router.push("#about")}>
+          <button
+            onClick={() => router.push("#about")}
+            className="border border-white px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-semibold text-white hover:bg-white hover:text-black transition-all"
+          >
             Learn More
           </button>
         </motion.div>
@@ -126,54 +126,51 @@ export default function Home() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.8 }}
+          className="w-full max-w-[800px] px-4"
         >
           <Image
             src="/luxurious-office-with-modern-furnishings-architecture_7023-479468__1_-removebg-preview.png"
             alt="AI Interior Design"
             width={800}
             height={600}
-            className="rounded-xl shadow-2xl object-cover z-10"
+            className="rounded-xl shadow-2xl object-cover w-full h-auto"
           />
         </motion.div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-6 bg-black text-center">
-        <h2 className="text-4xl font-extrabold text-white mb-12">Features</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <section id="features" className="py-20 px-6 sm:px-8 md:px-12 bg-black text-center">
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-12">Features</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
           {[
             {
               title: "Real-time Design",
-              desc: "Our AI engine allows you to instantly visualize room transformations. You can see changes in real-time, with the ability to experiment with different styles.",
+              desc: "Instantly visualize room transformations. Experiment with styles in real-time.",
             },
             {
               title: "Personalized Themes",
-              desc: "Choose from a variety of customizable themes, such as contemporary, minimalist, industrial, and more. The AI suggests adjustments based on your preferences.",
+              desc: "Choose customizable themes: contemporary, minimalist, industrial, and more.",
             },
             {
               title: "High-quality Visualization",
-              desc: "Our platform uses cutting-edge rendering technology to provide photorealistic images, ensuring you get an accurate representation of your transformed space.",
+              desc: "Photorealistic images powered by cutting-edge rendering technology.",
             },
           ].map((feature, idx) => (
             <div
               key={idx}
-              className="relative bg-gradient-to-r from-purple-700/30 to-blue-600/30 p-8 rounded-2xl shadow-xl border border-white/20 backdrop-blur-md hover:scale-105 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/40 transition-all duration-500 ease-in-out transform group overflow-hidden"
+              className="relative bg-gradient-to-r from-purple-700/30 to-blue-600/30 p-8 rounded-2xl shadow-xl border border-white/20 backdrop-blur-md hover:scale-105 hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 ease-in-out group"
             >
-              {/* Extra glassy shine effect */}
               <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-10 rounded-2xl transition-all duration-500"></div>
-              <h3 className="text-2xl font-semibold mb-4 text-white group-hover:rotate-[-1deg] group-hover:scale-105 transition-all duration-500">
-                {feature.title}
-              </h3>
-              <p className="text-lg text-gray-300 group-hover:text-gray-200 transition-all duration-500">
-                {feature.desc}
-              </p>
+              <h3 className="text-2xl font-semibold mb-4 text-white">{feature.title}</h3>
+              <p className="text-lg text-gray-300">{feature.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
+      {/* Divider */}
       <hr
-        className="my-8 mx-auto w-1/2 border-t-2 border-transparent"
+        className="my-12 mx-auto w-2/3 border-t-2 border-transparent"
         style={{
           background: 'linear-gradient(to right, rgb(126, 58, 242), rgb(29, 78, 216))',
           height: '2px',
@@ -182,78 +179,64 @@ export default function Home() {
       />
 
       {/* About Us Section */}
-      <section id="about" className="py-20 bg-black text-white text-center">
-        <h2 className="text-4xl font-extrabold text-white mb-8">About Us</h2>
-        <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
-          At AI-Room Design, we are passionate about transforming your space into something extraordinary using cutting-edge AI technology.
-          Our goal is to empower users to visualize and redesign their interiors effortlessly, making the world of design more accessible to everyone.
+      <section id="about" className="py-20 bg-black text-white text-center px-6 sm:px-10">
+        <h2 className="text-3xl sm:text-4xl font-extrabold mb-8">About Us</h2>
+        <p className="text-base sm:text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
+          At AI-Room Design, we’re passionate about using AI to make interior design effortless and accessible. Upload a photo — we do the rest.
         </p>
 
-        {/* About Us Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 max-w-4xl mx-auto">
-          <div className="space-y-6">
-            <h3 className="text-2xl font-semibold text-white">
-              Who We Are
-            </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 max-w-5xl mx-auto text-left">
+          <div className="space-y-4">
+            <h3 className="text-2xl font-semibold">Who We Are</h3>
             <p className="text-gray-300">
-              We are a team of interior design enthusiasts, AI experts, and tech innovators dedicated to creating a seamless experience
-              for users who want to visualize their dream spaces. Our platform combines the power of artificial intelligence with
-              beautiful, user-friendly design tools to give users the ability to regenerate their rooms with just a few clicks.
+              A team of interior design lovers, AI engineers, and builders crafting tools that let anyone reimagine their living space with a few clicks.
             </p>
           </div>
-
-          <div className="space-y-6">
-            <h3 className="text-2xl font-semibold text-white">
-              Our Mission
-            </h3>
+          <div className="space-y-4">
+            <h3 className="text-2xl font-semibold">Our Mission</h3>
             <p className="text-gray-300">
-              Our mission is simple: to make interior design more accessible to everyone. Whether you're a professional designer,
-              homeowner, or just looking to explore creative possibilities, we want to provide the best tools to turn your vision
-              into reality. We believe everyone deserves a beautifully designed space that fits their personality and needs.
+              We’re on a mission to democratize interior design. From DIY decorators to pro designers — we give everyone powerful tools to redesign with ease.
             </p>
           </div>
         </div>
 
-        {/* Team Member Section */}
+        {/* Team Section */}
         <div className="mt-16">
-          <h3 className="text-3xl font-extrabold text-white mb-10">
-            Meet Our Team
-          </h3>
-
-          <div className="flex justify-center gap-10">
+          <h3 className="text-3xl font-extrabold mb-10">Meet Our Team</h3>
+          <div className="flex flex-col sm:flex-row justify-center gap-12 items-center">
             {/* Team Member 1 */}
             <div className="text-center">
-              <div className="overflow-hidden rounded-full mb-4 w-48 h-48 mx-auto flex items-center justify-center transition-transform transform hover:scale-110 hover:shadow-xl duration-300 ease-in-out">
+              <div className="overflow-hidden rounded-full w-40 h-40 sm:w-48 sm:h-48 mx-auto mb-4 transition-transform transform hover:scale-110 shadow-lg">
                 <Image
                   src="/pratham.jpeg"
                   alt="Pratham Raghuvanshi"
-                  width={192} // Matching the size for the circular container
-                  height={192} // Matching the size for the circular container
-                  className="object-cover"
+                  width={192}
+                  height={192}
+                  className="object-cover w-full h-full"
                 />
               </div>
               <h4 className="font-semibold text-lg text-white">Pratham Raghuvanshi</h4>
-              <p className="text-gray-400">Designer N Developer</p>
+              <p className="text-gray-400 text-sm">Designer N Developer</p>
             </div>
 
             {/* Team Member 2 */}
             <div className="text-center">
-              <div className="overflow-hidden rounded-full mb-4 w-48 h-48 mx-auto flex items-center justify-center transition-transform transform hover:scale-110 hover:shadow-xl duration-300 ease-in-out">
+              <div className="overflow-hidden rounded-full w-40 h-40 sm:w-48 sm:h-48 mx-auto mb-4 transition-transform transform hover:scale-110 shadow-lg">
                 <Image
                   src="/shatakshi.jpeg"
                   alt="Shatakshi Rajput"
-                  width={192} // Matching the size for the circular container
-                  height={192} // Matching the size for the circular container
-                  className="object-cover"
+                  width={192}
+                  height={192}
+                  className="object-cover w-full h-full"
                 />
               </div>
               <h4 className="font-semibold text-lg text-white">Shatakshi Rajput</h4>
-              <p className="text-gray-400">Developer</p>
+              <p className="text-gray-400 text-sm">Developer</p>
             </div>
           </div>
         </div>
-
       </section>
+
 
 
       <hr
@@ -266,10 +249,20 @@ export default function Home() {
       />
 
 
+      {/* Divider */}
+      <hr
+        className="my-12 mx-auto w-2/3 border-t-2 border-transparent"
+        style={{
+          background: 'linear-gradient(to right, rgb(126, 58, 242), rgb(29, 78, 216))',
+          height: '2px',
+          boxShadow: '0 0 10px rgba(126, 58, 242, 0.7), 0 0 20px rgba(29, 78, 216, 0.7)',
+        }}
+      />
+
       {/* Contact Section */}
-      <section id="contact" className="bg-black text-white py-20 px-6">
-        <h2 className="text-4xl font-extrabold text-center mb-4">Contact Us</h2>
-        <p className="text-lg text-gray-300 text-center mb-12 max-w-2xl mx-auto">
+      <section id="contact" className="bg-black text-white py-20 px-6 sm:px-10">
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-center mb-4">Contact Us</h2>
+        <p className="text-base sm:text-lg text-gray-300 text-center mb-12 max-w-2xl mx-auto">
           Have questions or ideas? Our team is here to help you get started.
         </p>
 
@@ -277,45 +270,33 @@ export default function Home() {
           {/* Contact Info */}
           <div className="bg-gray-900/70 backdrop-blur-md rounded-2xl p-8 border border-purple-800/30 shadow-xl">
             <h3 className="text-2xl font-semibold mb-6">Contact Information</h3>
-            <p className="text-gray-400 mb-6">Reach out to us through any of these channels. We typically respond within 24 hours.</p>
+            <p className="text-gray-400 mb-6">Reach out to us via email, phone, or visit our office. We typically respond within 24 hours.</p>
 
             <div className="space-y-6 text-gray-300">
               <div className="flex items-start gap-4">
-                <div className="p-2 bg-gray-800 rounded-full">
-                  <svg className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12H8m0 0l4-4m-4 4l4 4" />
-                  </svg>
-                </div>
+                <Mail className="w-6 h-6 text-purple-400 mt-1" />
                 <div>
                   <p className="font-medium text-white">Email</p>
                   <p className="text-sm">support@ai-room.com</p>
-                  <p className="text-xs text-gray-500">We’ll get back to you within 24 hours.</p>
+                  <p className="text-xs text-gray-500">We’ll reply within 24 hours.</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="p-2 bg-gray-800 rounded-full">
-                  <svg className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h2l.4 2M7 13h10l4-8H5.4" />
-                  </svg>
-                </div>
+                <Phone className="w-6 h-6 text-purple-400 mt-1" />
                 <div>
                   <p className="font-medium text-white">Phone</p>
                   <p className="text-sm">+1 (555) 123-4567</p>
-                  <p className="text-xs text-gray-500">Mon–Fri | 9:00 AM – 6:00 PM (EST)</p>
+                  <p className="text-xs text-gray-500">Mon–Fri | 9:00 AM – 6:00 PM EST</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="p-2 bg-gray-800 rounded-full">
-                  <svg className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 22s8-4 8-10a8 8 0 10-16 0c0 6 8 10 8 10z" />
-                  </svg>
-                </div>
+                <MapPin className="w-6 h-6 text-purple-400 mt-1" />
                 <div>
                   <p className="font-medium text-white">Office Address</p>
                   <p className="text-sm">123 Tech Park, Suite 456</p>
-                  <p className="text-sm">San Francisco, CA 94107</p>
+                  <p className="text-sm">India 94107</p>
                 </div>
               </div>
 
@@ -336,38 +317,68 @@ export default function Home() {
             <p className="text-gray-400 text-sm mb-4">Fill out the form and we’ll get back to you shortly.</p>
 
             <div>
-              <label className="block text-sm mb-1" htmlFor="name">Name</label>
-              <input type="text" id="name" className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="Your name" />
+              <label htmlFor="name" className="block text-sm mb-1">Name</label>
+              <input
+                type="text"
+                id="name"
+                className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                placeholder="Your name"
+              />
             </div>
 
             <div>
-              <label className="block text-sm mb-1" htmlFor="email">Email</label>
-              <input type="email" id="email" className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="you@example.com" />
+              <label htmlFor="email" className="block text-sm mb-1">Email</label>
+              <input
+                type="email"
+                id="email"
+                className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                placeholder="you@example.com"
+              />
             </div>
 
             <div>
-              <label className="block text-sm mb-1" htmlFor="phone">Phone (optional)</label>
-              <input type="text" id="phone" className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="(555) 123-4567" />
+              <label htmlFor="phone" className="block text-sm mb-1">Phone (optional)</label>
+              <input
+                type="text"
+                id="phone"
+                className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                placeholder="(555) 123-4567"
+              />
             </div>
 
             <div>
-              <label className="block text-sm mb-1" htmlFor="subject">Subject</label>
-              <input type="text" id="subject" className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="How can we help you?" />
+              <label htmlFor="subject" className="block text-sm mb-1">Subject</label>
+              <input
+                type="text"
+                id="subject"
+                className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                placeholder="How can we help you?"
+              />
             </div>
 
             <div>
-              <label className="block text-sm mb-1" htmlFor="message">Message</label>
-              <textarea id="message" rows="4" className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="Please provide details about your inquiry..."></textarea>
+              <label htmlFor="message" className="block text-sm mb-1">Message</label>
+              <textarea
+                id="message"
+                rows={4}
+                className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+                placeholder="Please provide details about your inquiry..."
+              ></textarea>
             </div>
 
-            <button type="submit" className="w-full py-3 px-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-semibold hover:opacity-90 transition-all">
+            <button
+              type="submit"
+              className="w-full py-3 px-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-semibold hover:opacity-90 transition-all"
+            >
               Send Message
             </button>
           </form>
         </div>
       </section>
-      <footer className="bg-black text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
+
+      {/* Footer Section */}
+      <footer className="bg-black text-white px-6 py-12">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand and Socials */}
           <div>
             <div className="flex items-center mb-4">
@@ -377,9 +388,9 @@ export default function Home() {
               <span className="ml-2 font-semibold text-lg">AI-Room Design</span>
             </div>
             <p className="text-sm mb-4 text-gray-300">
-              Transforming Room Design with AI. Upload your room and get stunning redesigns instantly.
+              Transforming room design with AI. Upload your room and get stunning redesigns instantly.
             </p>
-            <div className="flex space-x-3 text-gray-400">
+            <div className="flex space-x-4 text-gray-400 mt-2">
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, index) => (
                 <Icon
                   key={index}
@@ -391,7 +402,7 @@ export default function Home() {
 
           {/* Company Links */}
           <div>
-            <h3 className="font-semibold mb-3">Company</h3>
+            <h3 className="font-semibold text-white mb-3">Company</h3>
             <ul className="space-y-2 text-sm text-gray-300">
               {["About Us", "Careers", "Blog", "Press"].map((item, index) => (
                 <li key={index}>
@@ -408,7 +419,7 @@ export default function Home() {
 
           {/* Resources Links */}
           <div>
-            <h3 className="font-semibold mb-3">Resources</h3>
+            <h3 className="font-semibold text-white mb-3">Resources</h3>
             <ul className="space-y-2 text-sm text-gray-300">
               {["Help Center", "Documentation", "API Reference", "Contact Support"].map((item, index) => (
                 <li key={index}>
@@ -425,7 +436,7 @@ export default function Home() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="font-semibold mb-3">Contact</h3>
+            <h3 className="font-semibold text-white mb-3">Contact</h3>
             <ul className="space-y-3 text-sm text-gray-300">
               <li className="flex items-center hover:text-white transition">
                 <Mail className="w-4 h-4 mr-2" />
@@ -437,16 +448,16 @@ export default function Home() {
               </li>
               <li className="flex items-center hover:text-white transition">
                 <MapPin className="w-4 h-4 mr-2" />
-                123 Restaurant Ave, Foodie City, FC 12345, USA
+                123 Room Lane, Interior City, CA 90210
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Row */}
-        <div className="border-t border-gray-800 pt-6 pb-4 text-sm text-gray-400 flex flex-col md:flex-row justify-between items-center px-6 max-w-7xl mx-auto">
-          <p className="text-center">© 2025 AI-Room Design. All rights reserved.</p>
-          <div className="flex space-x-4 mt-2 md:mt-0">
+        {/* Bottom Footer Row */}
+        <div className="border-t border-gray-800 mt-12 pt-6 text-sm text-gray-400 flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto">
+          <p className="text-center mb-4 md:mb-0">© 2025 AI-Room Design. All rights reserved.</p>
+          <div className="flex flex-wrap gap-4 justify-center md:justify-start">
             {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((item, index) => (
               <a
                 key={index}
@@ -460,6 +471,50 @@ export default function Home() {
         </div>
       </footer>
 
+
+      {/* Mobile Drawer */}
+      <motion.div
+        initial={{ x: "100%" }}
+        animate={{ x: drawerOpen ? 0 : "100%" }}
+        transition={{ type: "tween", duration: 0.3 }}
+        className="fixed top-0 right-0 h-full w-64 bg-black z-50 shadow-lg p-6 flex flex-col space-y-6 md:hidden"
+      >
+        {/* Close Button */}
+        <div className="flex justify-end">
+          <button onClick={() => setDrawerOpen(false)} aria-label="Close Menu">
+            <X className="w-6 h-6 text-white" />
+          </button>
+        </div>
+
+        {/* Navigation Links */}
+        <nav className="flex flex-col space-y-4 text-sm font-medium">
+          <a href="#features" onClick={() => setDrawerOpen(false)} className="text-gray-300 hover:text-purple-400">Features</a>
+          <a href="#about" onClick={() => setDrawerOpen(false)} className="text-gray-300 hover:text-purple-400">About</a>
+          <a href="#contact" onClick={() => setDrawerOpen(false)} className="text-gray-300 hover:text-purple-400">Contact</a>
+        </nav>
+
+        {/* Auth Buttons */}
+        <div className="flex flex-col space-y-3">
+          <button
+            onClick={() => {
+              handleGetStarted();
+              setDrawerOpen(false);
+            }}
+            className="border border-purple-500 text-purple-400 px-4 py-2 rounded-lg hover:bg-purple-600 hover:text-white transition-all"
+          >
+            Sign In
+          </button>
+          <button
+            onClick={() => {
+              handleGetStarted();
+              setDrawerOpen(false);
+            }}
+            className="bg-gradient-to-r from-purple-600 to-blue-500 text-white px-4 py-2 rounded-lg hover:opacity-90"
+          >
+            Sign Up
+          </button>
+        </div>
+      </motion.div>
     </main>
   );
 }

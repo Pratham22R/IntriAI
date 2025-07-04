@@ -82,11 +82,9 @@ function CreateNew() {
       return;
     }
 
-    console.log("User detail at updateUserCredit:", userDetail);
-
     const result = await db.update(Users).set(
       { credits: userDetail.credits - 1 }
-    ).where(eq(Users.id, userDetail.id)) // ✅ CORRECT usage
+    ).where(eq(Users.id, userDetail.id))
       .returning({ id: Users.id });
 
     if (result) {
@@ -98,12 +96,8 @@ function CreateNew() {
     const fileName = Date.now() + "_raw.png";
     const imageRef = ref(storage, `AI-Redesign/${fileName}`);
 
-    await uploadBytes(imageRef, formData.image).then(() => {
-      console.log('Uploaded a blob or file!');
-    });
-
+    await uploadBytes(imageRef, formData.image);
     const downloadUrl = await getDownloadURL(imageRef);
-    console.log('File available at', downloadUrl);
     setOrgImage(downloadUrl);
     return downloadUrl;
   };
@@ -113,20 +107,24 @@ function CreateNew() {
   }
 
   return (
-    <div className="px-4 md:px-10 py-10">
-      <div className="text-center">
-        <h2 className="font-bold text-4xl text-primary mb-2">Experience the magic of AI Remodelling</h2>
-        <p className="text-gray-400">Transform any room with a click. Select a space, choose a style, and watch as AI instantly reimagines your environment.</p>
+    <div className="px-4 sm:px-6 md:px-10 py-10 max-w-7xl mx-auto">
+      <div className="text-center px-2 sm:px-6">
+        <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl text-primary mb-2">Experience the magic of AI Remodelling</h2>
+        <p className="text-gray-500 text-sm sm:text-base">
+          Transform any room with a click. Select a space, choose a style, and watch as AI instantly reimagines your environment.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-10 justify-items-center">
-        <div className="w-full max-w-[400px]">
+      <div className="flex flex-col gap-10 mt-10 lg:grid lg:grid-cols-2">
+        <div className="w-full max-w-md sm:max-w-md md:max-w-xl lg:max-w-md mx-auto">
           <ImageSelection selectedImage={(value) => onHandledInputChange(value, 'image')} />
         </div>
-        <div className="w-full max-w-[400px]">
+
+        <div className="w-full max-w-md sm:max-w-md md:max-w-xl lg:max-w-md mx-auto">
           <RoomType selectedRoomType={(value) => onHandledInputChange(value, 'roomtype')} />
           <DesignType selectedDesignType={(value) => onHandledInputChange(value, 'designType')} />
           <AdditionalReq selectedAdditionalReq={(value) => onHandledInputChange(value, 'additionalReq')} />
+
           <Button
             className={`w-full mt-5 ${userDetail.credits === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={GenerateAiImage}
@@ -135,11 +133,17 @@ function CreateNew() {
             {userDetail.credits === 0 ? 'No Credits Left' : 'Generate'}
           </Button>
 
-          <p className="text-gray-400 text-sm mt-2">Note 1 credit will be used to redesign your room</p>
+          <p className="text-gray-400 text-sm mt-2">Note: 1 credit will be used to redesign your room.</p>
         </div>
       </div>
+
       <CustomLoading loading={loading} />
-      <AiOutputDailog openDialog={openOutputDialog} closeDailog={() => setOpenOutputDialog(false)} orgImage={orgImage} aiImage={aiOutputImage} />
+      <AiOutputDailog
+        openDialog={openOutputDialog}
+        closeDailog={() => setOpenOutputDialog(false)}
+        orgImage={orgImage}
+        aiImage={aiOutputImage}
+      />
     </div>
   );
 }
