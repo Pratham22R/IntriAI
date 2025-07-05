@@ -48,6 +48,11 @@ function CreateNew() {
   };
 
   const GenerateAiImage = async () => {
+    if (!formData.image) {
+      alert("Please upload an image before proceeding."); // You can use a toast instead
+      return;
+    }
+
     if (!userDetail || typeof userDetail.credits !== 'number') {
       console.error("User detail is not ready or malformed.");
       return;
@@ -75,6 +80,7 @@ function CreateNew() {
       setLoading(false);
     }
   };
+
 
   const updateUserCredit = async () => {
     if (!userDetail || typeof userDetail.credits !== 'number') {
@@ -126,12 +132,13 @@ function CreateNew() {
           <AdditionalReq selectedAdditionalReq={(value) => onHandledInputChange(value, 'additionalReq')} />
 
           <Button
-            className={`w-full mt-5 ${userDetail.credits === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`w-full mt-5 ${(userDetail.credits === 0 || !formData.image) ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={GenerateAiImage}
-            disabled={userDetail.credits === 0}
+            disabled={userDetail.credits === 0 || !formData.image}
           >
             {userDetail.credits === 0 ? 'No Credits Left' : 'Generate'}
           </Button>
+
 
           <p className="text-gray-400 text-sm mt-2">Note: 1 credit will be used to redesign your room.</p>
         </div>
