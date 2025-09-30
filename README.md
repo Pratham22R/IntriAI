@@ -34,6 +34,7 @@ npm install   # or yarn install
 ### **3️⃣ Run the Development Server**
 ```sh
 npm start  # or yarn dev
+npx drizzle-kit studio  # For Database viewing
 ```
 
 🔗 Open **[http://localhost:3000](http://localhost:3000)** in your browser to see the app in action.
