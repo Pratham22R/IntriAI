@@ -1,7 +1,7 @@
 # 🚀 AI-Powered Interior Design Platform   
 
 <a href="https://intriai.vercel.app/" target="_blank">
-    <img src="public/readme/intriaiposter.png" alt="Project Banner" width="900" height="450"/>
+    <img src="public/readme/intriaiposter.png" alt="Project Banner" />
   </a>
 
 Welcome to the **AI-Powered Interior Design Platform**, an innovative web app built using **Next.js**, designed to provide smart interior design suggestions powered by AI.
