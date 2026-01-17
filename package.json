@@ -27,7 +27,7 @@
     "firebase": "^11.6.1",
     "framer-motion": "^12.9.4",
     "lucide-react": "^0.475.0",
-    "next": "^15.2.3",
+    "next": "15.2.8",
     "react": "^19.0.0",
     "react-before-after-slider-component": "^1.1.8",
     "react-dom": "^19.0.0",
